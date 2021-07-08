@@ -15,7 +15,7 @@ import (
 	"github.com/kmtym1998/gqlgen-demo/graph/generated"
 )
 
-type User struct {
+type Sample struct {
 	Id   int `gorm:"column:id"`
 	Name string `gorm:"column:name"`
 }
@@ -36,13 +36,13 @@ func gormConnect() *gorm.DB {
 func main() {
 	db := gormConnect()
 	// defer db.Close()
-	var users []User
-	err := db.Where("id", 1).Find(&users).Error
+	var samples []Sample
+	err := db.Where("id", 1).Find(&samples).Error
 	if err != nil {
 		log.Fatalln("取得失敗", err)
 	}
 
-    fmt.Println(users)
+    fmt.Println(samples)
 
 	port := os.Getenv("PORT")
 	if port == "" {
