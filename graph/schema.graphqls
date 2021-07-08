@@ -22,7 +22,7 @@ type Sample {
 type Query {
   todos: [Todo!]!
   test: String!
-  samples_form_rs: [Sample]!
+  samples_from_rs: [Sample]!
 }
 
 input NewTodo {
@@ -41,7 +41,7 @@ input ExistingSample {
 
 type Mutation {
   createTodo(input: NewTodo!): Todo!
-  insert_sample_form_rs(input: NewSample): Sample!
-  update_sample_form_rs(input: ExistingSample): Sample!
+  insert_sample_from_rs(input: NewSample): Sample!
+  update_sample_from_rs(input: ExistingSample): Sample!
   delete_sample_from_rs(input: ExistingSample): Sample!
 }

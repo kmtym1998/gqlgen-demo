@@ -46,12 +46,12 @@ type ComplexityRoot struct {
 	Mutation struct {
 		CreateTodo         func(childComplexity int, input model.NewTodo) int
 		DeleteSampleFromRs func(childComplexity int, input *model.ExistingSample) int
-		InsertSampleFormRs func(childComplexity int, input *model.NewSample) int
-		UpdateSampleFormRs func(childComplexity int, input *model.ExistingSample) int
+		InsertSampleFromRs func(childComplexity int, input *model.NewSample) int
+		UpdateSampleFromRs func(childComplexity int, input *model.ExistingSample) int
 	}
 
 	Query struct {
-		SamplesFormRs func(childComplexity int) int
+		SamplesFromRs func(childComplexity int) int
 		Test          func(childComplexity int) int
 		Todos         func(childComplexity int) int
 	}
@@ -76,14 +76,14 @@ type ComplexityRoot struct {
 
 type MutationResolver interface {
 	CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error)
-	InsertSampleFormRs(ctx context.Context, input *model.NewSample) (*model.Sample, error)
-	UpdateSampleFormRs(ctx context.Context, input *model.ExistingSample) (*model.Sample, error)
+	InsertSampleFromRs(ctx context.Context, input *model.NewSample) (*model.Sample, error)
+	UpdateSampleFromRs(ctx context.Context, input *model.ExistingSample) (*model.Sample, error)
 	DeleteSampleFromRs(ctx context.Context, input *model.ExistingSample) (*model.Sample, error)
 }
 type QueryResolver interface {
 	Todos(ctx context.Context) ([]*model.Todo, error)
 	Test(ctx context.Context) (string, error)
-	SamplesFormRs(ctx context.Context) ([]*model.Sample, error)
+	SamplesFromRs(ctx context.Context) ([]*model.Sample, error)
 }
 
 type executableSchema struct {
@@ -125,36 +125,36 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.DeleteSampleFromRs(childComplexity, args["input"].(*model.ExistingSample)), true
 
-	case "Mutation.insert_sample_form_rs":
-		if e.complexity.Mutation.InsertSampleFormRs == nil {
+	case "Mutation.insert_sample_from_rs":
+		if e.complexity.Mutation.InsertSampleFromRs == nil {
 			break
 		}
 
-		args, err := ec.field_Mutation_insert_sample_form_rs_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_insert_sample_from_rs_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Mutation.InsertSampleFormRs(childComplexity, args["input"].(*model.NewSample)), true
+		return e.complexity.Mutation.InsertSampleFromRs(childComplexity, args["input"].(*model.NewSample)), true
 
-	case "Mutation.update_sample_form_rs":
-		if e.complexity.Mutation.UpdateSampleFormRs == nil {
+	case "Mutation.update_sample_from_rs":
+		if e.complexity.Mutation.UpdateSampleFromRs == nil {
 			break
 		}
 
-		args, err := ec.field_Mutation_update_sample_form_rs_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_update_sample_from_rs_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Mutation.UpdateSampleFormRs(childComplexity, args["input"].(*model.ExistingSample)), true
+		return e.complexity.Mutation.UpdateSampleFromRs(childComplexity, args["input"].(*model.ExistingSample)), true
 
-	case "Query.samples_form_rs":
-		if e.complexity.Query.SamplesFormRs == nil {
+	case "Query.samples_from_rs":
+		if e.complexity.Query.SamplesFromRs == nil {
 			break
 		}
 
-		return e.complexity.Query.SamplesFormRs(childComplexity), true
+		return e.complexity.Query.SamplesFromRs(childComplexity), true
 
 	case "Query.test":
 		if e.complexity.Query.Test == nil {
@@ -314,7 +314,7 @@ type Sample {
 type Query {
   todos: [Todo!]!
   test: String!
-  samples_form_rs: [Sample]!
+  samples_from_rs: [Sample]!
 }
 
 input NewTodo {
@@ -333,8 +333,8 @@ input ExistingSample {
 
 type Mutation {
   createTodo(input: NewTodo!): Todo!
-  insert_sample_form_rs(input: NewSample): Sample!
-  update_sample_form_rs(input: ExistingSample): Sample!
+  insert_sample_from_rs(input: NewSample): Sample!
+  update_sample_from_rs(input: ExistingSample): Sample!
   delete_sample_from_rs(input: ExistingSample): Sample!
 }
 `, BuiltIn: false},
@@ -375,7 +375,7 @@ func (ec *executionContext) field_Mutation_delete_sample_from_rs_args(ctx contex
 	return args, nil
 }
 
-func (ec *executionContext) field_Mutation_insert_sample_form_rs_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Mutation_insert_sample_from_rs_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
 	var arg0 *model.NewSample
@@ -390,7 +390,7 @@ func (ec *executionContext) field_Mutation_insert_sample_form_rs_args(ctx contex
 	return args, nil
 }
 
-func (ec *executionContext) field_Mutation_update_sample_form_rs_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Mutation_update_sample_from_rs_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
 	var arg0 *model.ExistingSample
@@ -500,7 +500,7 @@ func (ec *executionContext) _Mutation_createTodo(ctx context.Context, field grap
 	return ec.marshalNTodo2ᚖgithubᚗcomᚋkmtym1998ᚋgqlgenᚑdemoᚋgraphᚋmodelᚐTodo(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Mutation_insert_sample_form_rs(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+func (ec *executionContext) _Mutation_insert_sample_from_rs(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -517,7 +517,7 @@ func (ec *executionContext) _Mutation_insert_sample_form_rs(ctx context.Context,
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Mutation_insert_sample_form_rs_args(ctx, rawArgs)
+	args, err := ec.field_Mutation_insert_sample_from_rs_args(ctx, rawArgs)
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
@@ -525,7 +525,7 @@ func (ec *executionContext) _Mutation_insert_sample_form_rs(ctx context.Context,
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().InsertSampleFormRs(rctx, args["input"].(*model.NewSample))
+		return ec.resolvers.Mutation().InsertSampleFromRs(rctx, args["input"].(*model.NewSample))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -542,7 +542,7 @@ func (ec *executionContext) _Mutation_insert_sample_form_rs(ctx context.Context,
 	return ec.marshalNSample2ᚖgithubᚗcomᚋkmtym1998ᚋgqlgenᚑdemoᚋgraphᚋmodelᚐSample(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Mutation_update_sample_form_rs(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+func (ec *executionContext) _Mutation_update_sample_from_rs(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -559,7 +559,7 @@ func (ec *executionContext) _Mutation_update_sample_form_rs(ctx context.Context,
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Mutation_update_sample_form_rs_args(ctx, rawArgs)
+	args, err := ec.field_Mutation_update_sample_from_rs_args(ctx, rawArgs)
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
@@ -567,7 +567,7 @@ func (ec *executionContext) _Mutation_update_sample_form_rs(ctx context.Context,
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().UpdateSampleFormRs(rctx, args["input"].(*model.ExistingSample))
+		return ec.resolvers.Mutation().UpdateSampleFromRs(rctx, args["input"].(*model.ExistingSample))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -696,7 +696,7 @@ func (ec *executionContext) _Query_test(ctx context.Context, field graphql.Colle
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Query_samples_form_rs(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+func (ec *executionContext) _Query_samples_from_rs(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -714,7 +714,7 @@ func (ec *executionContext) _Query_samples_form_rs(ctx context.Context, field gr
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().SamplesFormRs(rctx)
+		return ec.resolvers.Query().SamplesFromRs(rctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2273,13 +2273,13 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "insert_sample_form_rs":
-			out.Values[i] = ec._Mutation_insert_sample_form_rs(ctx, field)
+		case "insert_sample_from_rs":
+			out.Values[i] = ec._Mutation_insert_sample_from_rs(ctx, field)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "update_sample_form_rs":
-			out.Values[i] = ec._Mutation_update_sample_form_rs(ctx, field)
+		case "update_sample_from_rs":
+			out.Values[i] = ec._Mutation_update_sample_from_rs(ctx, field)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -2342,7 +2342,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				}
 				return res
 			})
-		case "samples_form_rs":
+		case "samples_from_rs":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
 				defer func() {
@@ -2350,7 +2350,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Query_samples_form_rs(ctx, field)
+				res = ec._Query_samples_from_rs(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&invalids, 1)
 				}

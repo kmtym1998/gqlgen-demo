@@ -30,7 +30,7 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 	return todo, nil
 }
 
-func (r *mutationResolver) InsertSampleFormRs(ctx context.Context, input *model.NewSample) (*model.Sample, error) {
+func (r *mutationResolver) InsertSampleFromRs(ctx context.Context, input *model.NewSample) (*model.Sample, error) {
 	db := postgres.Open()
 	defer postgres.Close()
 	newSample := model.Sample{Name: input.Name}
@@ -42,8 +42,7 @@ func (r *mutationResolver) InsertSampleFormRs(ctx context.Context, input *model.
 
 	return &newSample, nil
 }
-
-func (r *mutationResolver) UpdateSampleFormRs(ctx context.Context, input *model.ExistingSample) (*model.Sample, error) {
+func (r *mutationResolver) UpdateSampleFromRs(ctx context.Context, input *model.ExistingSample) (*model.Sample, error) {
 	db := postgres.Open()
 	defer postgres.Close()
 	var sample model.Sample
@@ -90,7 +89,7 @@ func (r *queryResolver) Test(ctx context.Context) (string, error) {
 	return "test", nil
 }
 
-func (r *queryResolver) SamplesFormRs(ctx context.Context) ([]*model.Sample, error) {
+func (r *queryResolver) SamplesFromRs(ctx context.Context) ([]*model.Sample, error) {
 	db := postgres.Open()
 	defer postgres.Close()
 	var samples []*model.Sample
