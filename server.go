@@ -1,9 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
+
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
@@ -11,9 +15,35 @@ import (
 	"github.com/kmtym1998/gqlgen-demo/graph/generated"
 )
 
+type User struct {
+	Id   int `gorm:"column:id"`
+	Name string `gorm:"column:name"`
+}
+
 const defaultPort = "8081"
 
+func gormConnect() *gorm.DB {
+	dsn := "host=localhost user=hasura password=secret dbname=postgres port=5432 sslmode=disable TimeZone=Asia/Tokyo"
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+
+	if err != nil {
+		log.Fatalln("接続失敗", err)
+	}
+
+	return db
+}
+
 func main() {
+	db := gormConnect()
+	// defer db.Close()
+	var users []User
+	err := db.Where("id", 1).Find(&users).Error
+	if err != nil {
+		log.Fatalln("取得失敗", err)
+	}
+
+    fmt.Println(users)
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
