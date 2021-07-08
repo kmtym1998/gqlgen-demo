@@ -7,10 +7,12 @@ import (
 	"context"
 	"crypto/rand"
 	"fmt"
+	"log"
 	"math/big"
 
 	"github.com/kmtym1998/gqlgen-demo/graph/generated"
 	"github.com/kmtym1998/gqlgen-demo/graph/model"
+	"github.com/kmtym1998/gqlgen-demo/graph/pkg/postgres"
 )
 
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
@@ -34,6 +36,17 @@ func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
 
 func (r *queryResolver) Test(ctx context.Context) (string, error) {
 	return "test", nil
+}
+
+func (r *queryResolver) Samples(ctx context.Context) ([]*model.Sample, error) {
+	db := postgres.Open()
+	defer postgres.Close()
+	var samples [] *model.Sample
+	err := db.Find(&samples).Error
+	if err != nil {
+		log.Fatalln("取得失敗", err)
+	}
+	return samples, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.
