@@ -48,9 +48,9 @@ type ComplexityRoot struct {
 	}
 
 	Query struct {
-		Samples func(childComplexity int) int
-		Test    func(childComplexity int) int
-		Todos   func(childComplexity int) int
+		SamplesFormRs func(childComplexity int) int
+		Test          func(childComplexity int) int
+		Todos         func(childComplexity int) int
 	}
 
 	Sample struct {
@@ -77,7 +77,7 @@ type MutationResolver interface {
 type QueryResolver interface {
 	Todos(ctx context.Context) ([]*model.Todo, error)
 	Test(ctx context.Context) (string, error)
-	Samples(ctx context.Context) ([]*model.Sample, error)
+	SamplesFormRs(ctx context.Context) ([]*model.Sample, error)
 }
 
 type executableSchema struct {
@@ -107,12 +107,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.CreateTodo(childComplexity, args["input"].(model.NewTodo)), true
 
-	case "Query.samples":
-		if e.complexity.Query.Samples == nil {
+	case "Query.samples_form_rs":
+		if e.complexity.Query.SamplesFormRs == nil {
 			break
 		}
 
-		return e.complexity.Query.Samples(childComplexity), true
+		return e.complexity.Query.SamplesFormRs(childComplexity), true
 
 	case "Query.test":
 		if e.complexity.Query.Test == nil {
@@ -272,7 +272,7 @@ type Sample {
 type Query {
   todos: [Todo!]!
   test: String!
-  samples: [Sample]!
+  samples_form_rs: [Sample]!
 }
 
 input NewTodo {
@@ -471,7 +471,7 @@ func (ec *executionContext) _Query_test(ctx context.Context, field graphql.Colle
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Query_samples(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+func (ec *executionContext) _Query_samples_form_rs(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -489,7 +489,7 @@ func (ec *executionContext) _Query_samples(ctx context.Context, field graphql.Co
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Samples(rctx)
+		return ec.resolvers.Query().SamplesFormRs(rctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2054,7 +2054,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				}
 				return res
 			})
-		case "samples":
+		case "samples_form_rs":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
 				defer func() {
@@ -2062,7 +2062,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Query_samples(ctx, field)
+				res = ec._Query_samples_form_rs(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&invalids, 1)
 				}

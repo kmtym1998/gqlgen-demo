@@ -38,7 +38,7 @@ func (r *queryResolver) Test(ctx context.Context) (string, error) {
 	return "test", nil
 }
 
-func (r *queryResolver) Samples(ctx context.Context) ([]*model.Sample, error) {
+func (r *queryResolver) SamplesFormRs(ctx context.Context) ([]*model.Sample, error) {
 	db := postgres.Open()
 	defer postgres.Close()
 	var samples [] *model.Sample
