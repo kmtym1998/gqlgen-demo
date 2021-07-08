@@ -10,4 +10,6 @@ up:
 	go run server.go
 #	docker run -it gqlgen-demo
 
+generate:
+	go run github.com/99designs/gqlgen generate
 
