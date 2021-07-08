@@ -2,6 +2,11 @@
 
 package model
 
+type ExistingSample struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
 type NewSample struct {
 	Name string `json:"name"`
 }

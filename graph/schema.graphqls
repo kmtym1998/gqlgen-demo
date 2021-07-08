@@ -34,7 +34,13 @@ input NewSample {
   name: String!
 }
 
+input ExistingSample {
+  id: Int!
+  name: String!
+}
+
 type Mutation {
   createTodo(input: NewTodo!): Todo!
   insert_sample_form_rs(input: NewSample): Sample!
+  update_sample_form_rs(input: ExistingSample): Sample!
 }

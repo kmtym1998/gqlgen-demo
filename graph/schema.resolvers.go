@@ -30,6 +30,23 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 	return todo, nil
 }
 
+func (r *mutationResolver) InsertSampleFormRs(ctx context.Context, input *model.NewSample) (*model.Sample, error) {
+	db := postgres.Open()
+	defer postgres.Close()
+	newSample := model.Sample{Name: input.Name}
+	result := db.Create(&newSample)
+
+	if result.Error != nil {
+		log.Fatalln("失敗", result.Error)
+	}
+
+	return &newSample, nil
+}
+
+func (r *mutationResolver) UpdateSampleFormRs(ctx context.Context, input *model.ExistingSample) (*model.Sample, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
 	return r.todos, nil
 }
@@ -47,19 +64,6 @@ func (r *queryResolver) SamplesFormRs(ctx context.Context) ([]*model.Sample, err
 		log.Fatalln("取得失敗", err)
 	}
 	return samples, nil
-}
-
-func (r *mutationResolver) InsertSampleFormRs(ctx context.Context, input *model.NewSample) (*model.Sample, error) {
-	db := postgres.Open()
-	defer postgres.Close()
-	newSample := model.Sample{Name: input.Name}
-	result := db.Create(&newSample)
-
-	if result.Error != nil {
-		log.Fatalln("失敗", result.Error)
-	}
-
-	return &newSample, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.
