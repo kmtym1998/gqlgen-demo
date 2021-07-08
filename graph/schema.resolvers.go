@@ -44,7 +44,42 @@ func (r *mutationResolver) InsertSampleFormRs(ctx context.Context, input *model.
 }
 
 func (r *mutationResolver) UpdateSampleFormRs(ctx context.Context, input *model.ExistingSample) (*model.Sample, error) {
-	panic(fmt.Errorf("not implemented"))
+	db := postgres.Open()
+	defer postgres.Close()
+	var sample model.Sample
+	result := db.Where("id = ?", input.ID).First(&sample)
+	if result.Error != nil {
+		print("取得に失敗した", result.Error)
+		return &model.Sample{}, nil
+	}
+
+	sample.Name = input.Name + "(更新した)"
+	result = db.Save(&sample)
+	if result.Error != nil {
+		print("更新に失敗した", result.Error)
+		return &model.Sample{}, nil
+	}
+
+	return &sample, nil
+}
+
+func (r *mutationResolver) DeleteSampleFromRs(ctx context.Context, input *model.ExistingSample) (*model.Sample, error) {
+	db := postgres.Open()
+	defer postgres.Close()
+	var sample model.Sample
+	result := db.Where("id = ?", input.ID).First(&sample)
+	if result.Error != nil {
+		print("取得に失敗した", result.Error)
+		return &model.Sample{}, nil
+	}
+
+	result = db.Delete(&model.Sample{}, input.ID)
+	if result.Error != nil {
+		print("削除に失敗した", result.Error)
+		return &model.Sample{}, nil
+	}
+
+	return &sample, nil
 }
 
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {

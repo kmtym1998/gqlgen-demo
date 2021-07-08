@@ -43,4 +43,5 @@ type Mutation {
   createTodo(input: NewTodo!): Todo!
   insert_sample_form_rs(input: NewSample): Sample!
   update_sample_form_rs(input: ExistingSample): Sample!
+  delete_sample_from_rs(input: ExistingSample): Sample!
 }
