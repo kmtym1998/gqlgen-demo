@@ -5,18 +5,35 @@ package graph
 
 import (
 	"context"
+	"crypto/rand"
 	"fmt"
+	"math/big"
 
 	"github.com/kmtym1998/gqlgen-demo/graph/generated"
 	"github.com/kmtym1998/gqlgen-demo/graph/model"
 )
 
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented"))
+	random, err := rand.Int(rand.Reader, big.NewInt(256))
+	if err != nil {
+		fmt.Printf("randの生成でエラーが起こった: %v\n", err)
+	}
+
+	todo := &model.Todo{
+		Text: input.Text,
+		ID:   fmt.Sprintf("T%d", random),
+		User: &model.User{ID: input.UserID, Name: "user " + input.UserID},
+	}
+	r.todos = append(r.todos, todo)
+	return todo, nil
 }
 
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
 	return r.todos, nil
+}
+
+func (r *queryResolver) Test(ctx context.Context) (string, error) {
+	return "test", nil
 }
 
 // Mutation returns generated.MutationResolver implementation.
