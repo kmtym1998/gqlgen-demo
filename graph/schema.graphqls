@@ -30,6 +30,11 @@ input NewTodo {
   userId: String!
 }
 
+input NewSample {
+  name: String!
+}
+
 type Mutation {
   createTodo(input: NewTodo!): Todo!
+  insert_sample_form_rs(input: NewSample): Sample!
 }

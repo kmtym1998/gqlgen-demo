@@ -41,12 +41,25 @@ func (r *queryResolver) Test(ctx context.Context) (string, error) {
 func (r *queryResolver) SamplesFormRs(ctx context.Context) ([]*model.Sample, error) {
 	db := postgres.Open()
 	defer postgres.Close()
-	var samples [] *model.Sample
+	var samples []*model.Sample
 	err := db.Find(&samples).Error
 	if err != nil {
 		log.Fatalln("取得失敗", err)
 	}
 	return samples, nil
+}
+
+func (r *mutationResolver) InsertSampleFormRs(ctx context.Context, input *model.NewSample) (*model.Sample, error) {
+	db := postgres.Open()
+	defer postgres.Close()
+	newSample := model.Sample{Name: input.Name}
+	result := db.Create(&newSample)
+
+	if result.Error != nil {
+		log.Fatalln("失敗", result.Error)
+	}
+
+	return &newSample, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.
