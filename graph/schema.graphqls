@@ -14,9 +14,15 @@ type User {
   name: String!
 }
 
+type Sample {
+  id: Int!
+  name: String!
+}
+
 type Query {
   todos: [Todo!]!
   test: String!
+  samples: [Sample]!
 }
 
 input NewTodo {
