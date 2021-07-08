@@ -11,5 +11,5 @@ up:
 #	docker run -it gqlgen-demo
 
 generate:
-	go run github.com/99designs/gqlgen generate
+	go generate ./...
 
