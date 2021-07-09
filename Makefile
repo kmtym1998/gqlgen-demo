@@ -7,7 +7,7 @@ build:
 	docker compose build
 
 build-prod:
-	docker build -t gqlgen-demo-prod --target prod .
+	docker build -t gqlgen-demo-prod --target runner .
 
 up:
 	docker compose up
