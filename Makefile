@@ -6,10 +6,11 @@ usage:
 build:
 	docker build -t gqlgen-demo .
 
-up:
+run:
 	go run server.go
-#	docker run -it gqlgen-demo
 
 generate:
 	go generate ./...
 
+up:
+	docker run -it gqlgen-demo

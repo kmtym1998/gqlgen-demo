@@ -1,13 +1,24 @@
-# https://zenn.dev/iris_ohyaman/articles/73d4472a3e2f94c55664
-FROM golang:1.16.5
+# https://qiita.com/Yuuki557/items/3d088de91ab86bc71600
+FROM golang:1.16.5 as builder
 
-ENV APP_ROOT /app
+WORKDIR /app
 
-RUN mkdir $APP_ROOT
-WORKDIR $APP_ROOT
+COPY go.mod go.sum ./
+RUN go mod download
 
-COPY ./ $APP_ROOT
+COPY .  ./
+
+ARG CGO_ENABLED=0
+ARG GOOS=linux
+ARG GOARCH=amd64
+RUN go build \
+    -o /go/bin/server \
+    -ldflags '-s -w'
+
+FROM scratch as runner
+
+COPY --from=builder /go/bin/server /app/server
 
 EXPOSE 8081
 
-CMD ["go", "run", "server.go"]
+ENTRYPOINT ["/app/server"]
