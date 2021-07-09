@@ -15,3 +15,5 @@ generate:
 up:
 	docker run -p 8081:8081 --name gqlgen-demo -it gqlgen-demo
 
+start:
+	docker start -i $(docker ps -aqf name=gqlgen-demo)
