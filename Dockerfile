@@ -1,5 +1,4 @@
-# https://qiita.com/Yuuki557/items/3d088de91ab86bc71600
-# https://qiita.com/po3rin/items/8b57e6c22f2b34751333
+# 本番環境ではビルドされたファイルを実行するだけの単純なイメージにする
 
 # バイナリファイルをビルドする用の中間イメージ
 FROM golang:1.16.5 as builder
@@ -14,17 +13,8 @@ RUN go build \
     -ldflags '-s -w'
 
 # 本番実行環境
-FROM scratch as prod
+FROM scratch as runner
 COPY --from=builder /go/bin/server /app/server
 COPY ./.env /
 EXPOSE 8081
 ENTRYPOINT ["/app/server"]
-
-# 開発環境ホットリロード
-FROM golang:1.16.5 as dev
-EXPOSE 8081
-WORKDIR /app
-ENV GO111MODULE=on
-COPY . ./
-RUN go get github.com/pilu/fresh
-CMD ["fresh"]d
