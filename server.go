@@ -24,7 +24,7 @@ func main() {
 	if readEnvErr != nil {
 		print(".envが読めなかった", readEnvErr)
 	}
-	PORT := "host=" + os.Getenv("PORT")
+	PORT := os.Getenv("PORT")
 	if PORT == "" {
 		PORT = defaultPort
 	}
