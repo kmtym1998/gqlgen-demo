@@ -7,6 +7,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/joho/godotenv"
 	"github.com/kmtym1998/gqlgen-demo/graph"
 	"github.com/kmtym1998/gqlgen-demo/graph/generated"
 )
@@ -19,9 +20,13 @@ type Sample struct {
 const defaultPort = "8081"
 
 func main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = defaultPort
+	readEnvErr := godotenv.Load()
+	if readEnvErr != nil {
+		print(".envが読めなかった", readEnvErr)
+	}
+	PORT := "host=" + os.Getenv("PORT")
+	if PORT == "" {
+		PORT = defaultPort
 	}
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
@@ -29,6 +34,6 @@ func main() {
 	http.Handle("/", playground.Handler("GraphQL playground", "/graphql"))
 	http.Handle("/graphql", srv)
 
-	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	log.Printf("connect to http://localhost:%s/ for GraphQL playground", PORT)
+	log.Fatal(http.ListenAndServe(":"+PORT, nil))
 }

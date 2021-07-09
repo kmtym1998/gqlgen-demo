@@ -1,21 +1,35 @@
 package postgres
 
 import (
+	"os"
+
+	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 var (
 	db  *gorm.DB
-	err error
+	dbConnectionErr error
 )
 
 func Open() (*gorm.DB) {
-	// TODO: 環境変数を使う
-	dsn := "host=host.docker.internal user=hasura password=secret dbname=postgres port=5432 sslmode=disable TimeZone=Asia/Tokyo"
-	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil {
-		print("DB接続失敗", err)
+	readEnvErr := godotenv.Load()
+	if readEnvErr != nil {
+		print(".envが読めなかった", readEnvErr)
+	}
+	DB_HOST := "host=" + os.Getenv("DB_HOST")
+	DB_USER := " user=" + os.Getenv("DB_USER")
+	DB_PASSWORD := " password=" + os.Getenv("DB_PASSWORD")
+	DB_NAME := " dbname=" + os.Getenv("DB_NAME")
+	DB_PORT := " port=" + os.Getenv("DB_PORT")
+	DB_SSLMODE := " sslmode=" + os.Getenv("DB_SSLMODE")
+	DB_TIMEZONE := " Timezone=" + os.Getenv("DB_TIMEZONE")
+
+	dsn := DB_HOST + DB_USER + DB_PASSWORD + DB_NAME + DB_PORT + DB_SSLMODE + DB_TIMEZONE
+	db, dbConnectionErr = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if dbConnectionErr != nil {
+		print("DB接続失敗", dbConnectionErr)
 	}
 	return db
 }
