@@ -13,4 +13,5 @@ generate:
 	go generate ./...
 
 up:
-	docker run -it gqlgen-demo
+	docker run -p 8081:8081 --name gqlgen-demo -it gqlgen-demo
+
