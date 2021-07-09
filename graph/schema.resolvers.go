@@ -7,7 +7,6 @@ import (
 	"context"
 	"crypto/rand"
 	"fmt"
-	"log"
 	"math/big"
 
 	"github.com/kmtym1998/gqlgen-demo/graph/generated"
@@ -37,7 +36,7 @@ func (r *mutationResolver) InsertSampleFromRs(ctx context.Context, input *model.
 	result := db.Create(&newSample)
 
 	if result.Error != nil {
-		log.Fatalln("失敗", result.Error)
+		print("作成に失敗", result.Error)
 	}
 
 	return &newSample, nil
@@ -95,7 +94,7 @@ func (r *queryResolver) SamplesFromRs(ctx context.Context) ([]*model.Sample, err
 	var samples []*model.Sample
 	err := db.Find(&samples).Error
 	if err != nil {
-		log.Fatalln("取得失敗", err)
+		print("取得失敗", err)
 	}
 	return samples, nil
 }
