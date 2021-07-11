@@ -3,6 +3,7 @@
 ### 前提
 - docker
 - go (v1.16.5)
+  - GraphQL schemaからgoのコードをgenerateするのに必要
 
 ### 開発環境立ち上げ
 
