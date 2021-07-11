@@ -2,10 +2,13 @@
 
 ### 開発環境立ち上げ
 
-- `.env.sample` をコピーして `.env` ファイルを作成
-
 ```sh
 git clone https://github.com/kmtym1998/gqlgen-demo
+```
+
+`.env.sample` をコピーして `.env` ファイルを作成
+
+```sh
 docker compose up
 ```
 
