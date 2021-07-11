@@ -1,5 +1,9 @@
 # gqlgen-demo
 
+### 前提
+- docker
+- go (v1.16.5)
+
 ### 開発環境立ち上げ
 
 ```sh
