@@ -13,4 +13,4 @@ up:
 	docker compose up
 
 generate:
-	go generate ./...
+	go run github.com/99designs/gqlgen

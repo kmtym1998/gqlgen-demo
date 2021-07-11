@@ -17,7 +17,7 @@ type Sample struct {
 	Name string `gorm:"column:name"`
 }
 
-const defaultPort = "8081"
+const defaultPort = "8080"
 
 func main() {
 	readEnvErr := godotenv.Load()

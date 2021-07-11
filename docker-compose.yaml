@@ -8,7 +8,7 @@ services:
     # Go アプリではなく、ここではホットリローダー air を起動しておく
     command: air -c .air.toml
     ports:
-      - '8081:8081'
+      - '8080:8080'
     volumes:
       - type: bind
         source: .

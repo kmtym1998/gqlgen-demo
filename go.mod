@@ -1,6 +1,6 @@
 module github.com/kmtym1998/gqlgen-demo
 
-go 1.15
+go 1.16
 
 require (
 	github.com/99designs/gqlgen v0.13.0
