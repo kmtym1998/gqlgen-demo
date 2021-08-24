@@ -2,9 +2,23 @@
 
 package model
 
+type ExistingSample struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+type NewSample struct {
+	Name string `json:"name"`
+}
+
 type NewTodo struct {
 	Text   string `json:"text"`
 	UserID string `json:"userId"`
+}
+
+type Sample struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
 }
 
 type Todo struct {

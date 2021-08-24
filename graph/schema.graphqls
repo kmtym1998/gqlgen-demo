@@ -14,8 +14,15 @@ type User {
   name: String!
 }
 
+type Sample {
+  id: Int!
+  name: String!
+}
+
 type Query {
   todos: [Todo!]!
+  test: String!
+  samples_from_rs: [Sample]!
 }
 
 input NewTodo {
@@ -23,6 +30,18 @@ input NewTodo {
   userId: String!
 }
 
+input NewSample {
+  name: String!
+}
+
+input ExistingSample {
+  id: Int!
+  name: String!
+}
+
 type Mutation {
   createTodo(input: NewTodo!): Todo!
+  insert_sample_from_rs(input: NewSample): Sample!
+  update_sample_from_rs(input: ExistingSample): Sample!
+  delete_sample_from_rs(input: ExistingSample): Sample!
 }
